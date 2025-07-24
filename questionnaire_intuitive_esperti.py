@@ -33,6 +33,7 @@ if st.session_state.pagina == 0 and not st.session_state.finished:
 
     if esperto:
         if st.button("Avanti"):
+            st.session_state["esperto_radio"] = esperto  # <-- aggiungi questa riga
             st.session_state.pagina = 1
 
 # Pagina 1: Ranking delle suture
