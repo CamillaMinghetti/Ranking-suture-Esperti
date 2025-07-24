@@ -130,7 +130,8 @@ def salva_su_google_sheet(punteggi, valutazioni):
     soggetto = len(records) + 1
 
     # Prepara la riga: soggetto, esperto, punteggi, valutazioni
-    row = [soggetto, st.session_state.esperto_radio] + [p if p is not None else "" for p in punteggi] + [v if v is not None else "" for v in valutazioni]
+    esperto = st.session_state.get("esperto_radio", "")
+    row = [soggetto, esperto] + [p if p is not None else "" for p in punteggi] + [v if v is not None else "" for v in valutazioni]
     sheet.append_row(row)
 
 # Pagina finale
