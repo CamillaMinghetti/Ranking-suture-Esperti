@@ -11,7 +11,7 @@ if 'pagina' not in st.session_state:
 if 'finished' not in st.session_state:
     st.session_state.finished = False
 
-# Pagina 0: Descrizione e domanda esperienza
+# Pagina 0: Descrizione
 if st.session_state.pagina == 0 and not st.session_state.finished:
     st.markdown("# How do surgeons learn?")
     st.markdown("### Toward personalized robotic-assisted laparoscopy training based on high-density EEG")
@@ -20,20 +20,13 @@ if st.session_state.pagina == 0 and not st.session_state.finished:
         Questo progetto di ricerca, finanziato da Intuitive Foundation, è volto allo studio dell'attività cerebrale del chirurgo durante il training in laparoscopia robot-assistita e di come questa descriva il livello di expertise.
         Per questo progetto, stiamo raccogliendo dati tramite un breve questionario rivolto a chirurghi con esperienza in chirurgia robotica.
         Il questionario richiede pochi minuti e può essere compilato in forma anonima.
-            
+        
         Nel questionario, le verrà chiesto di classificare le 12 immagini di suture in base alla loro complessità, assegnando un punteggio da 1 (più semplice) a 12 (più complessa). Le immagini mostrano due tipi di sutura: una orientata con 4 diverse angolazioni e l'altra orientata con 8 diverse angolazioni.
         Si prega di valutare la difficoltà di suturare la ferita in base a questi orientamenti e classificare le immagini di conseguenza.
     """)
 
-    esperto = st.radio(
-        "È lei un chirurgo esperto con esperienza in chirurgia robotica?",
-        options=["Sì", "No"],
-        key="esperto_radio"
-    )
-
-    if esperto:
-        if st.button("Avanti"):
-            st.session_state.pagina = 1
+    if st.button("Avanti"):
+        st.session_state.pagina = 1
 
 # Pagina 1: Ranking delle suture
 elif st.session_state.pagina == 1 and not st.session_state.finished:
@@ -66,7 +59,6 @@ elif st.session_state.pagina == 1 and not st.session_state.finished:
     for i, score in enumerate(st.session_state.punteggi, start=1):
         st.write(f"Sutura {i}: {score if score else 'Non ancora classificata'}")
 
-    # Controllo: tutti i numeri devono essere unici e da 1 a 12
     punteggi_validi = [p for p in st.session_state.punteggi if p is not None]
     numeri_doppi = len(set(punteggi_validi)) != len(punteggi_validi)
     numeri_non_validi = sorted(punteggi_validi) != list(range(1, 13))
@@ -79,7 +71,7 @@ elif st.session_state.pagina == 1 and not st.session_state.finished:
         if st.button("Avanti"):
             st.session_state.pagina = 2
 
-# Pagina 2: Spiegazione e introduzione
+# Pagina 2: Valutazione parametri
 elif st.session_state.pagina == 2 and not st.session_state.finished:
     st.title("Valutazione dei parametri di una sutura")
     st.write("""
@@ -113,6 +105,7 @@ elif st.session_state.pagina == 2 and not st.session_state.finished:
     if st.button("Invia e termina"):
         st.session_state.finished = True
 
+# Salvataggio su Google Sheet
 def salva_su_google_sheet(punteggi, valutazioni):
     scope = [
         "https://www.googleapis.com/auth/spreadsheets",
@@ -122,23 +115,18 @@ def salva_su_google_sheet(punteggi, valutazioni):
     creds = Credentials.from_service_account_info(creds_data, scopes=scope)
     client = gspread.authorize(creds)
 
-    # Apri il foglio
     sheet = client.open("Questionario Intuitive Esperti").sheet1
 
-    # Calcola il prossimo soggetto
     records = sheet.get_all_records()
     soggetto = len(records) + 1
 
-    # Prepara la riga: soggetto, esperto, punteggi, valutazioni
-    esperto = st.session_state.get("esperto_radio", "")
-    row = [soggetto, esperto] + [p if p is not None else "" for p in punteggi] + [v if v is not None else "" for v in valutazioni]
+    row = [soggetto] + [p if p is not None else "" for p in punteggi] + [v if v is not None else "" for v in valutazioni]
     sheet.append_row(row)
 
 # Pagina finale
 if st.session_state.finished:
     st.title("Grazie per aver compilato il questionario!")
 
-    # Salva su Google Sheet solo una volta
     if 'saved' not in st.session_state:
         salva_su_google_sheet(st.session_state.punteggi, st.session_state.valutazioni)
         st.session_state.saved = True
