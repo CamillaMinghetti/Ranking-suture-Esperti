@@ -78,7 +78,9 @@ elif st.session_state.pagina == 2 and not st.session_state.finished:
     Le verrà chiesto di indicare quanto ritiene importanti i seguenti parametri nella valutazione di una sutura, con l'obiettivo di raccogliere il punto di vista dei professionisti esperti su alcuni dei parametri che definiscono una sutura bene eseguita:
     - tempo di esecuzione
     - accuratezza del punto di inserzione dell'ago (precisione del punto di ingresso e di uscita dell'ago rispetto alla linea di sutura ideale)
-    - eventuali errori (punti in cui l'ago non ha trapassato la pelle, errori di penetrazione, numero di tentativi incompleti o punti non eseguiti correttamente)
+    - eventuali errori (punti in cui l'ago non ha trapassato la pelle, errori di penetrazione, numero di tentativi incompleti o punti non eseguiti correttamente).
+             
+    
     La scala di valutazione andrà da 1 (=per niente importante) a 10 (= molto importante).
     """)
 
