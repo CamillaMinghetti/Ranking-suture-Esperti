@@ -75,7 +75,7 @@ elif st.session_state.pagina == 1 and not st.session_state.finished:
 elif st.session_state.pagina == 2 and not st.session_state.finished:
     st.title("Valutazione dei parametri di una sutura")
     st.write("""
-    Le verrà chiesto di indicare quanto ritiene importanti i seguenti parametri nella valutazione di una sutura, con l'obiettivo di raccogliere il punto di vista dei professiisti esperti su alcuni dei parametri che definiscono una sutura bene eseguita:
+    Le verrà chiesto di indicare quanto ritiene importanti i seguenti parametri nella valutazione di una sutura, con l'obiettivo di raccogliere il punto di vista dei professionisti esperti su alcuni dei parametri che definiscono una sutura bene eseguita:
     - tempo di esecuzione
     - accuratezza del punto di inserzione dell'ago (precisione del punto di ingresso e di uscita dell'ago rispetto alla linea di sutura ideale)
     - eventuali errori (punti in cui l'ago non ha trapassato la pelle, errori di penetrazione, numero di tentativi incompleti o punti non eseguiti correttamente)
